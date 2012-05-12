@@ -61,6 +61,10 @@ module Fog
           end
 
           spot_request.save
+          
+          # This server won't show up right away, so we need to sleep before we even wait
+          sleep 10
+          
           spot_request.wait_for(Fog.timeout, interval=4) { ready? }
           Fog.wait_for { server = connection.servers.get(spot_request.reload.instance_id) }
           server = connection.servers.get(spot_request.instance_id)
